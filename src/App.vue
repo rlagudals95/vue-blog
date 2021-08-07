@@ -35,8 +35,12 @@ export default {
   box-sizing: border-box;
   font-family: "Quicksand", sans-serif;
 }
+.app-wrapper {
+  width: 100%;
+} 
 
 .app {
+  width: 100%;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -70,6 +74,26 @@ export default {
     }
 }
 
+button,
+.router-button {
+  transition: 500ms ease all;
+  cursor: pointer;
+  margin-top: 25px;
+  padding: 12px 25px;
+  background-color: #303030;
+  color: #fff;
+  border-radius: 20px;
+  border:none;
+  text-transform: uppercase;
+
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: rgba(48,48,48,0.7);
+  }
+}
+
 .blog-card-wrap {
   position: relative;
   padding: 80px 16px;
@@ -81,16 +105,17 @@ export default {
   .blog-cards {
     display: grid;
     gap: 32px;
-    grid-template-columns: repeat(4,1fr);
-       
-    @media(max-width: 500px) { // 500px 밑으로 내려가면
-  
-      grid-template-columns: repeat(2,1fr);
+    grid-template-columns: 1fr;
+    flex-direction: row; 
+
+    @media(min-width: 500px) { // 500px 밑으로 내려가면
+
+      grid-template-columns: repeat(1,1fr);
     }
-    @media(max-width: 900px) {
+    @media(min-width: 900px) {
       grid-template-columns: repeat(3,1fr);
     }
-    @media(max-width: 1200px) {
+    @media(min-width: 1200px) {
      
       grid-template-columns: repeat(4,1fr);
     }
