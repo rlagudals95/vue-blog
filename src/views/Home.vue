@@ -6,7 +6,7 @@
       <div class="container">
         <h3>View More Recent Blogs</h3>
         <div class="blog-cards">
-          <BlogCards :post="post" v-for="(post, index) in sampleBlogCards " :key= "index"/>
+          <BlogCard :post="post" v-for="(post, index) in sampleBlogCards " :key= "index"/>
         </div>
       </div>
       </div>
@@ -23,11 +23,12 @@
 
 <script>
 import BlogPost from '../conponents/BlogPost';
-import BlogCards from "../conponents/BlogCard"
+import BlogCard from "../conponents/BlogCard"
 import Arrow from "../assets/Icons/arrow-right-light.svg"
+
 export default {
   name: "Home",
-  components: { BlogPost, BlogCards, Arrow },
+  components: { BlogPost, BlogCard, Arrow },
   data(){
     return{
       // welcomeScreen: {
@@ -55,14 +56,14 @@ export default {
           blogCoverPhoto: 'beautiful-stories'
         },
       ],
-      sampleBlogCards : [
-        {blogTitle: "Blog Cards #1", blogCoverPhoto:"stock-1", blogDate: "May 1, 2021"},
-        {blogTitle: "Blog Cards #2", blogCoverPhoto:"stock-2", blogDate: "May 1, 2021"},
-        {blogTitle: "Blog Cards #3", blogCoverPhoto:"stock-3", blogDate: "May 1, 2021"},
-        {blogTitle: "Blog Cards #4", blogCoverPhoto:"stock-4", blogDate: "May 1, 2021"},
-      ],
     };
   },
+  computed : {
+    sampleBlogCards() {
+      return this.$store.state.sampleBlogCards; //vuex 에서 가져온 데이터
+    }
+  }
+
 };
 </script>
 
@@ -99,7 +100,7 @@ export default {
     }
 
     h2 {
-      font-weight: 300;
+      font-weight: 500;
       font-size: 32px;
       max-width: 425px;
       width: 100%;

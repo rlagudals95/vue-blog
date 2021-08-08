@@ -1,9 +1,9 @@
 <template>
   <div class="app-wrapper">
     <div class="app">
-      <Navigation/>
+      <Navigation v-if="!navigation"/>
       <router-view/>
-      <Footer/>
+      <Footer v-if="!navigation"/>
     </div>
   </div>
 </template>
@@ -17,12 +17,27 @@ export default {
   name: "app",
   components: {Navigation, Footer},
   data() {
-    return {};
+    return {
+      navigation: null,
+    };
   },
-  created() {},
+  created() {
+    this.checkRoute() // 페이지 이동 시 계속 주소를 체크해서 nav & footer 출력 여부를 계속 판단
+  },
   mounted() {},
-  methods: {},
-  watch: {},
+  methods: {
+    checkRoute () {   
+        if(this.$route.name === 'Login' || this.$route.name === 'Resister' || this.$route.name === 'ForgotPassword') {
+          this.navigation = true;
+          return;
+        } this.navigation = false;
+    },
+  },
+  watch: {
+    $route() {
+      this.checkRoute();
+    }
+  },
 };
 </script>
 
