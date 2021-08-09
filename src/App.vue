@@ -27,13 +27,13 @@ export default {
   mounted() {},
   methods: {
     checkRoute () {   
-        if(this.$route.name === 'Login' || this.$route.name === 'Resister' || this.$route.name === 'ForgotPassword') {
+        if(this.$route.name === 'Login' || this.$route.name === 'Register' || this.$route.name === 'ForgotPassword') {
           this.navigation = true;
           return;
         } this.navigation = false;
     },
   },
-  watch: {
+  watch: { // 음... 감시하는 개념인가..?
     $route() {
       this.checkRoute();
     }
@@ -135,5 +135,11 @@ button,
       grid-template-columns: repeat(4,1fr);
     }
   }
+}
+
+.error {
+  text-align: center;
+  font-size: 12px;
+  color: red;
 }
 </style>

@@ -8,8 +8,8 @@
                 <ul v-show="!mobile">
                     <router-link class="link" :to="{name: 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name : 'Blogs'}">Blogs</router-link>
-                    <router-link class="link" to="#">Create Post</router-link>
-                    <router-link class="link" to="#">Login/Resister</router-link>
+                    <router-link class="link" :to="{name : 'Blogs'}">Create Post</router-link>
+                    <router-link class="link" :to="{name : 'Login'}">Login/Resister</router-link>
                 </ul>
             </div>
             </nav>
@@ -21,7 +21,7 @@
                     <router-link class="link" :to="{name : 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name : 'Blogs'}">Blogs</router-link>
                     <router-link class="link" to="#">Create Post</router-link>
-                    <router-link class="link" to="#">Login/Resister</router-link>
+                    <router-link class="link" :to="{name : 'Login'}">Login/Resister</router-link>
                 </ul>
             </transition>
   </header>
