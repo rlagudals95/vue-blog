@@ -83,7 +83,7 @@ export default {
           username: this.username,
           email: this.email,
         })
-        this.$router.push({name: "Home"})
+        this.$router.push({name: "Login"})
         return
       }
       this.error = true;

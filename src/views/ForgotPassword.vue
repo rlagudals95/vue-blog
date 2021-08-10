@@ -1,10 +1,15 @@
 <template>
   <div class="reset-password">
     <!-- close-modal 함수를 closeModal이란 props로 넘겨줌 -->
-    <Modal v-if="modalActive" v-on:close-modal="closeModal" /> 
+    <Modal v-if="modalActive" :modalMassage="modalMessage" v-on:close-modal="closeModal" /> 
     <Loading v-if="loading" />
     <div class = "form-wrap">
         <form class="reset">
+            <h2>Reset Password</h2>
+            <p class="login-register">
+              Back to
+              <router-link class="router-link" :to="{name:'Login'}">Login</router-link> 
+            </p>
             <h2>Reset Password</h2>
             <p>Forgot your password? Enter yout email to reset it</p>
             <div class="inputs">
@@ -13,7 +18,7 @@
                     <email class="icon" />
                 </div>
             </div>
-            <button>Reset</button>
+            <button @click.prevent="resetPassword">Reset</button>
             <div class="angle"></div>    
         </form>
         <div class="background"></div>
@@ -25,6 +30,8 @@
 import email from "../assets/Icons/envelope-regular.svg" 
 import Modal from "../conponents/Modal.vue"
 import Loading from "../conponents/Loading.vue"
+import firebase from "firebase/app"
+import "firebase/auth"
 
 export default {
   name: 'ForgotPassword',
@@ -38,6 +45,19 @@ export default {
     }
   },
   methods : {
+    resetPassword () {
+      this.loading = true;
+      firebase.auth().sendPasswordResetEmail(this.email) // email을 firebase로 전송해 pw 리셋
+      .then(() => {
+        this.modalMassage= "if you account exist, you will receive a email";
+        this.loading = false;
+        this.modalActive - true;
+      }).catch((err)=> {
+        this.modalMassage = err.message;
+        this.loading = false;
+        this.modalActive = true;
+      })
+    },
     closeModal() {
       this.modalActive = !this.modalActive; // modal toggle
       this.email = "";     

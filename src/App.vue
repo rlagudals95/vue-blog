@@ -11,7 +11,8 @@
 <script>
 import Navigation from './conponents/Navigation.vue'
 import Footer from './conponents/Footer.vue'
-
+import firebase from "firebase/app"
+import "firebase/auth"
 
 export default {
   name: "app",
@@ -21,7 +22,14 @@ export default {
       navigation: null,
     };
   },
-  created() {
+  created() { // created 새로고침 할 때 마다 실행 즉, 웹앱을 실행하는 동안 값을 계속 저장 or 조건 체크 가능하게함
+    firebase.auth().onAuthStateChanged((user)=> {
+      console.log('created')
+      this.$store.commit("updateUser",user);
+      if(user){
+        this.$store.dispatch("getCurrentUser") // user가 있다면 즉, 로그인 상태라면 getCurrenUser로 현재 접속유저 정보 vuex store에 상태값 저장
+      } 
+    });
     this.checkRoute() // 페이지 이동 시 계속 주소를 체크해서 nav & footer 출력 여부를 계속 판단
   },
   mounted() {},
@@ -36,6 +44,11 @@ export default {
   watch: { // 음... 감시하는 개념인가..?
     $route() {
       this.checkRoute();
+      // if (!firebase.auth().currentUser) { // 로그인 상태인지 router 이동마다 체크
+      //   this.$router.push({name: "Login"})
+      //   alert('로그인 해주세요!');
+      // }
+      // console.log('현재 위치 체크');
     }
   },
 };
