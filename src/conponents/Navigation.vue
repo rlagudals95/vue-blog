@@ -5,12 +5,45 @@
             <router-link class="header" :to="{name: 'Home'}">HMK1022</router-link>
         </div>
             <div class="nav-links">
-                <ul v-show="!mobile">
+                <ul class="nav_ul" v-show="!mobile">
                     <router-link class="link" :to="{name: 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name : 'Blogs'}">Blogs</router-link>
                     <router-link class="link" :to="{name : 'Blogs'}">Create Post</router-link>
                     <router-link class="link" :to="{name : 'Login'}">Login/Resister</router-link>
                 </ul>
+                <div @click="toggleProfileMenu" class="profile" ref="profile">
+                    <span>{{this.$store.state.profileInitials}}</span>
+                    <div v-show="profileMenu" class="profile-menu">
+                        <div class="info">
+                            <p class="initials">{{this.$store.state.profileInitials}}</p>
+                            <div class="right">
+                                <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
+                                <p>{{this.$store.state.profileUserName}}</p>
+                                <p>{{this.$store.state.profileEmail}}</p>
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option">
+                                <router-link class="option" to="#">
+                                    <userIcon class="icon"/>
+                                    <p>Profile</p>    
+                                </router-link>
+                            </div>
+                            <div class="option">
+                                <router-link class="option" to="#">
+                                    <adminIcon class="icon"/>
+                                    <p>Admin</p>    
+                                </router-link>
+                            </div>
+                            <div class="option">
+                                <router-link class="option" to="#">
+                                    <signOutIcon class="icon"/>
+                                    <p>Sign Out</p>    
+                                </router-link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </nav>
              <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" /> 
@@ -29,17 +62,24 @@
 
 <script>
 import menuIcon from '../assets/Icons/bars-regular.svg'
+import userIcon from '../assets/Icons/user-alt-light.svg'
+import adminIcon from '../assets/Icons/user-crown-light.svg'
+import signOutIcon from '../assets/Icons/sign-out-alt-regular.svg'
+
 export default {  
     name: 'navigation',
     components: {
-         menuIcon
+         menuIcon,
+         userIcon,
+         adminIcon,
+         signOutIcon
     },
     data () {
         return {
+            profileMenu: null,
             mobile: null,
             mobileNav: null,
             windowWidth : null,
-
         };
     },
 
@@ -67,7 +107,12 @@ export default {
 
         toggleMobileNav(){
             // 햄버거 버튼 토글
-            this.mobileNav = !this.mobileNav
+            this.mobileNav = !this.mobileNav;
+        },
+        toggleProfileMenu(e) {
+            if(e.target === this.$refs.profile){console.log('이것도 수정')}
+                 this.profileMenu = !this.profileMenu;
+                  
         }
     }
 
@@ -117,23 +162,105 @@ export default {
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            flex: 1;
-
-            ul {
-                margin-right: 32px;
-
-                .link {
-                    margin-right: 32px;
-                }
-                .link:last-child {
-                    margin-right: 0;
-                }
-            }
+            flex: 1;   
             }
         }
 
     }
+              .nav-links {
+                  display: flex;
+              }
+              // 수정할 부분
+                .nav_ul {
+                    margin-right: 32px;    
+                    .link {
+                        margin-right: 32px;
+                    }
+                    .link:last-child {
+                        margin-right: 0;
+                    }
+                }
 
+                .profile {
+                    position:relative;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    color: #fff;
+                    background-color: #303030;
+                    span {
+                        pointer-events: none;
+                    }
+
+                .profile-menu {
+                    position: absolute;
+                    top: 50px;
+                    right: 0;
+                    width: 250px;
+                    background-color: #303030;
+                    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+                }
+
+                .info {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px;
+                    background-color: #303030;
+                    border-bottom: 1px solid #fff;
+
+                    .initials {
+                        position: initial;
+                        width: 40px;
+                        height: 40px;
+                        background-color: #fff;
+                        color: #303030;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                    }
+                    .right {
+                        flex: 1;   
+                        margin-left: 24px;
+
+                        p:nth-child(1){
+                            font-size: 14px;
+                        }
+                        p:nth-child(2),
+                        p:nth-child(3){
+                            font-size: 12px;
+                        }
+                    }
+                }
+                .options {
+                    padding: 15px;
+                    .option{
+                        text-decoration: none;
+                        color: #fff;
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 12px;
+
+                        .icon {
+                            width: 18px;
+                            height: auto;
+                        }
+                        p {
+                          font-size: 14px;
+                          margin-left: 12px; 
+                        }
+
+                        &:last-child {
+                            margin-bottom: 0px;
+                        }
+                    }
+                }
+             }
+                // 수정할 부분
     .menu-icon {
         cursor: pointer;
         position: absolute;

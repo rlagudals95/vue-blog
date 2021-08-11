@@ -28,6 +28,7 @@ export default {
       this.$store.commit("updateUser",user);
       if(user){
         this.$store.dispatch("getCurrentUser") // user가 있다면 즉, 로그인 상태라면 getCurrenUser로 현재 접속유저 정보 vuex store에 상태값 저장
+        console.log('profile',this.$store.state.profileEmail);
       } 
     });
     this.checkRoute() // 페이지 이동 시 계속 주소를 체크해서 nav & footer 출력 여부를 계속 판단
