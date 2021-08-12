@@ -63,7 +63,7 @@ export default {
       return this.$store.state.sampleBlogCards; //vuex 에서 가져온 데이터
     },
     user() {
-      return this.store.state.user
+      return this.$store.state.user
     }
   }
 
