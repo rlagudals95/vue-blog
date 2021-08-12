@@ -49,7 +49,13 @@
             twitter,
             instagram,
             linkdin
-        }
+        },
+        computed : { // nav가 생길때 마다 발동 ex) 로그인 or 회원가입시 >> 그 외의 페이지(nav가 생길때)
+        user() {
+           console.log('유저정보',this.$store.state.user)
+           return this.$store.state.user;  // 로그인 시 user를 리턴해 유저프로필을 오른쪽 상단에 띄워준다
+        },
+    }
     }
 </script>
 

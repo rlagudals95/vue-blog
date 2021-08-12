@@ -9,9 +9,10 @@
                     <router-link class="link" :to="{name: 'Home'}">Home</router-link>
                     <router-link class="link" :to="{name : 'Blogs'}">Blogs</router-link>
                     <router-link class="link" :to="{name : 'Blogs'}">Create Post</router-link>
-                    <router-link class="link" :to="{name : 'Login'}">Login/Resister</router-link>
+                    <router-link v-if="!this.$store.state.user"  class="link" :to="{name : 'Login'}">Login/Resister</router-link>
                 </ul>
-                <div @click="toggleProfileMenu" class="profile" ref="profile">
+                <div v-if="user" @click="toggleProfileMenu" class="profile" ref="profile">
+                    <!-- this.$store.state.user>> user라고 줄여 써도 된다 -->
                     <span>{{this.$store.state.profileInitials}}</span>
                     <div v-show="profileMenu" class="profile-menu">
                         <div class="info">
@@ -35,11 +36,9 @@
                                     <p>Admin</p>    
                                 </router-link>
                             </div>
-                            <div class="option">
-                                <router-link class="option" to="#">
+                            <div @click="signOut" class="option">
                                     <signOutIcon class="icon"/>
-                                    <p>Sign Out</p>    
-                                </router-link>
+                                    <p>Sign Out</p>                                  
                             </div>
                         </div>
                     </div>
@@ -57,7 +56,7 @@
                     <router-link class="link" :to="{name : 'Login'}">Login/Resister</router-link>
                 </ul>
             </transition>
-  </header>
+     </header>
 </template>
 
 <script>
@@ -65,6 +64,8 @@ import menuIcon from '../assets/Icons/bars-regular.svg'
 import userIcon from '../assets/Icons/user-alt-light.svg'
 import adminIcon from '../assets/Icons/user-crown-light.svg'
 import signOutIcon from '../assets/Icons/sign-out-alt-regular.svg'
+import firebase from "firebase/app"
+import "firebase/auth"
 
 export default {  
     name: 'navigation',
@@ -85,6 +86,7 @@ export default {
 
     created() {// created는 어떤 조건에 흠.... 함수선언??
         //window에 함수 선언
+        console.log('created')
         window.addEventListener('resize', this.checkScreen);
         this.checkScreen();
     }
@@ -111,9 +113,18 @@ export default {
         },
         toggleProfileMenu(e) {
             if(e.target === this.$refs.profile){console.log('이것도 수정')}
-                 this.profileMenu = !this.profileMenu;
-                  
-        }
+                 this.profileMenu = !this.profileMenu;    
+        },
+        signOut() {
+            firebase.auth().signOut();
+            window.location.reload();
+        },
+    },
+    computed : { // nav가 생길때 마다 발동 ex) 로그인 or 회원가입시 >> 그 외의 페이지(nav가 생길때)
+        user() {
+           console.log('유저정보',this.$store.state.user)
+           return this.$store.state.user;  // 로그인 시 user를 리턴해 유저프로필을 오른쪽 상단에 띄워준다
+        },
     }
 
 }
