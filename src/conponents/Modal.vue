@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
       <div class="modal-content">
-          <p>{{this.modalMessage}}</p>
+          <p>{{this.modalMassage}}</p>
           <button @click="closeModal">close</button>
       </div>
   </div>
