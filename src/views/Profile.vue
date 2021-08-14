@@ -13,7 +13,7 @@
               </div>
               <div class="input">
                   <label for="firstName">First Name:</label>
-                  <input type="text" id="firstName" v-model="firstName" /> 
+                  <input type="text" id="firstName" v-model="firseName" /> 
               </div>
               <div class="input">
                   <label for="firstName">Last Name:</label>
@@ -21,11 +21,11 @@
               </div>
               <div class="input">
                   <label for="uesrname">Username:</label>
-                  <input type="text" id="userName" v-model="firstName" /> 
+                  <input type="text" id="userName" v-model="username" /> 
               </div>
               <div class="input">
                   <label for="firstName">Email:</label>
-                  <input type="text" id="firstName" v-model="firstName" /> 
+                  <input type="text" id="firstName" v-model="profileEmail" /> 
               </div>
               <button>Save Change</button>
           </div>
@@ -70,7 +70,15 @@ export default {
     },
      username: {
       get () {
-        return this.$store.state.profileUsername;
+        return this.$store.state.profileUserName;
+      },
+      set (payload) {
+        this.$store.commit("changeUsername",payload);
+      }
+    },
+      profileEmail: {
+      get () {
+        return this.$store.state.profileEmail;
       },
       set (payload) {
         this.$store.commit("changeUsername",payload);
@@ -122,7 +130,7 @@ export default {
       .initial-in {
         margin: auto;
       }
-      
+
       .admin-badge {
         display: flex;
         align-self: center;
