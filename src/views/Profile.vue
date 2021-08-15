@@ -17,7 +17,7 @@
         </div>
         <div class="input">
           <label for="firstName">First Name:</label>
-          <input type="text" id="firstName" v-model="firseName" />
+          <input type="text" id="firstName" v-model="firstName" />
         </div>
         <div class="input">
           <label for="firstName">Last Name:</label>
@@ -60,7 +60,7 @@ export default {
     },
   },
   computed: {
-    firseName: {
+    firstName: {
       get() {
         return this.$store.state.profileFirstName;
       },
