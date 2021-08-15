@@ -1,36 +1,44 @@
 <template>
   <div class="home">
     <BlogPost :post="welcomeScreen" />
-    <BlogPost :post="post" v-for="(post, index) in sampleBlogPost" :key="index" /> 
+    <BlogPost
+      :post="post"
+      v-for="(post, index) in sampleBlogPost"
+      :key="index"
+    />
     <div class="blog-card-wrap">
       <div class="container">
         <h3>View More Recent Blogs</h3>
         <div class="blog-cards">
-          <BlogCard :post="post" v-for="(post, index) in sampleBlogCards " :key= "index"/>
+          <BlogCard
+            :post="post"
+            v-for="(post, index) in sampleBlogCards"
+            :key="index"
+          />
         </div>
       </div>
+    </div>
+    <div v-if="!user" class="updates">
+      <div class="container">
+        <h2>never miss a post. Register for your free account today!</h2>
+        <router-link class="router-button" to="#">
+          Resister for FireBlogs <Arrow class="arrow arrow-light" />
+        </router-link>
       </div>
-      <div  v-if="!user" class="updates">
-        <div class="container">
-          <h2>never miss a post. Register for your free account today!</h2>
-          <router-link class= "router-button" to="#">
-            Resister for FireBlogs <Arrow class= "arrow arrow-light"/>
-          </router-link>
-        </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import BlogPost from '../conponents/BlogPost';
-import BlogCard from "../conponents/BlogCard"
-import Arrow from "../assets/Icons/arrow-right-light.svg"
+import BlogPost from "../conponents/BlogPost";
+import BlogCard from "../conponents/BlogCard";
+import Arrow from "../assets/Icons/arrow-right-light.svg";
 
 export default {
   name: "Home",
   components: { BlogPost, BlogCard, Arrow },
-  data(){
-    return{
+  data() {
+    return {
       // welcomeScreen: {
       //   title: 'Welcome',
       //   blogPost: 'Developer HMK1022',
@@ -38,43 +46,39 @@ export default {
       //   photo: 'coding',
       // },
       // welcomeScreen 먹히질 않는다..후.,..
-      sampleBlogPost : [
+      sampleBlogPost: [
         {
           title: "Welcome",
-          blogPost: 'Developer HMK1022 Developer HMK1022 Developer HMK1022 Developer HMK1022',
+          blogPost: "Developer HMK1022 Developer HMK1022",
           welcomeScreen: true,
-          blogCoverPhoto: 'coding'
+          blogCoverPhoto: "coding",
         },
         {
           title: "This is a Filter Title2!",
-          blogHTML: '항해중인 개발자2',
-          blogCoverPhoto: 'designed-for-everyone'
+          blogHTML: "항해중인 개발자2",
+          blogCoverPhoto: "designed-for-everyone",
         },
-          {
+        {
           title: "This is a Filter Title2!",
-          blogHTML: '항해중인 개발자2',
-          blogCoverPhoto: 'beautiful-stories'
+          blogHTML: "항해중인 개발자2",
+          blogCoverPhoto: "beautiful-stories",
         },
       ],
     };
   },
-  computed : {
+  computed: {
     sampleBlogCards() {
       return this.$store.state.sampleBlogCards; //vuex 에서 가져온 데이터
     },
     user() {
-      return this.$store.state.user
-    }
-  }
-
+      return this.$store.state.user;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-
-
-
-.blog-card-wrap{
+.blog-card-wrap {
   h3 {
     font-weight: 300;
     font-size: 28px;
@@ -89,8 +93,8 @@ export default {
     flex-direction: column;
     align-items: center;
     @media (min-width: 800px) {
-       padding: 125px 25px;
-       flex-direction: row;
+      padding: 125px 25px;
+      flex-direction: row;
     }
 
     .router-button {
@@ -110,14 +114,11 @@ export default {
       text-align: center;
       text-transform: uppercase;
 
-      @media (min-width:800px) {
+      @media (min-width: 800px) {
         text-align: initial;
         font-size: 40px;
       }
     }
   }
 }
-
-
-
 </style>
