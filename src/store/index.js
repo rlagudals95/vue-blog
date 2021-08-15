@@ -38,6 +38,7 @@ export default new Vuex.Store({
     profileUserName: null,
     profileId: null,
     profileInitials: null,
+    profileAdmin: null,
   },
   mutations: {
     toggleEditPost(state, payload) {
@@ -47,6 +48,10 @@ export default new Vuex.Store({
     },
     updateUser(state, payload) {
       state.user = payload;
+    },
+    setProfileAdmin(state, payload) {
+      state.profileAdmin = payload;
+      console.log('admin : ', state.profileAdmin);
     },
     setProfileInfo(state, doc) {
       state.profileId = doc.id;
@@ -73,7 +78,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getCurrentUser({ commit }) {
+    async getCurrentUser({ commit }, user) {
       console.log("getC");
       const dataBase = await db
         .collection("user")
@@ -83,6 +88,10 @@ export default new Vuex.Store({
       commit("setProfileInitials");
       console.log(dbResults);
       console.log("action");
+      const token = await user.getIdTokenResult();
+      const admin = await token.claims.aud;
+
+      commit('setProfileAdmin', admin);
     },
     async updateUserSettings({ commit, state }) {
       const database = await db.collection('user').doc(state.profileId);
