@@ -49,6 +49,13 @@ export default new Vuex.Store({
     profileAdmin: null,
   },
   mutations: {
+    newBlogPost(state, payload) {
+      state.blogHTML = payload;
+      console.log('HTML', state.blogHTML)
+    },
+    updateBlogTitle(state, payload) {
+      state.blogHTML = payload;
+    },
     toggleEditPost(state, payload) {
       // vuex의 state값을 변경해 줄 때 쓰는 것 같다
       state.editPost = payload;
