@@ -76,7 +76,7 @@ export default {
         this.$store.commit("changeUsername",payload);
       }
     },
-      profileEmail: {
+     profileEmail: {
       get () {
         return this.$store.state.profileEmail;
       },
