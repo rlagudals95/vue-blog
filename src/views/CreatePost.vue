@@ -31,6 +31,7 @@
           :editorOptions="editorSettings"
           v-model="blogHTML"
           useCustomImageHandler
+          @image-added="imageHandler"
         />
       </div>
       <div class="blog-actions">
@@ -41,6 +42,8 @@
   </div>
 </template>
 <script>
+import firebase from "firebase/app"
+import "firebase/storage";
 import Quill from "quill";
 import BlogCoverPreview from "../conponents/BlogCoverPreview.vue"
 window.Quill = Quill;
@@ -68,10 +71,23 @@ export default {
       const fileName = this.file.name;
       console.log('fileName',this.file);
       this.$store.commit("fileNameChange",fileName);
-      this.$store.commit("createFileURl",URL.createObjectURL(this.file));// 사진 파일의 url을 자동생성?? 이건대박인데
+      this.$store.commit("createFileURL",URL.createObjectURL(this.file));// 사진 파일의 url을 자동생성?? 이건대박인데
     },
     openPreview () {
       this.$store.commit("openPhotoPreview")
+    },
+    imageHandler(file, Editor, cursorLocation, resetUploader) {
+      const storageRef = firebase.storage().ref();
+      const docRef = storageRef.child(`document/blogPostPhotos/${file.name}`); 
+      docRef.put(file).on("state_changed",(snapshot)=> {
+        console.log('snapshot',snapshot);
+      }, (err)=> {
+        console.log('err',err)
+      }, async() => {
+        const downloadURL = await docRef.getDownloadURL();
+        Editor.insetEmbed(cursorLocation, "image", downloadURL);
+        resetUploader();
+      });
     }
   },
   computed: {

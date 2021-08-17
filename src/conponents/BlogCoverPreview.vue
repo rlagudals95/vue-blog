@@ -3,7 +3,7 @@
       <div class="modal-content">
           <close @click="closePreview" class="icon">
              x
-          </close>
+          </close>   
           <img :src="this.blogCoverPhoto" alt =""/>
       </div>
   </div>
@@ -13,9 +13,8 @@
 import close from "../assets/Icons/times-circle-light.svg"
 
 export default {
-    component : {
-        close,
-    },
+    name: "BlogCoverPreview",
+    components: {close},
     methods : {
         closePreview() {
             this.$store.commit("openPhotoPreview");
@@ -69,9 +68,10 @@ export default {
             img {
                 margin-top: 16px;
                 display: block;
-                width: auto;
+                width: 100%;
                 height: 100%;
-                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+                object-fit: cover;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.7);
             }
         }
         

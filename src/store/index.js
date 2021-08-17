@@ -51,7 +51,7 @@ export default new Vuex.Store({
   },
   mutations: {
     openPhotoPreview(state) {
-      state.blogPhotoPreview = !state.blogPhotePreview;
+      state.blogPhotoPreview = !state.blogPhotoPreview;
     },
 
     fileNameChange(state, payload) {
