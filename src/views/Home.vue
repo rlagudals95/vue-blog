@@ -39,12 +39,12 @@ export default {
   components: { BlogPost, BlogCard, Arrow },
   data() {
     return {
-      // welcomeScreen: {
-      //   title: 'Welcome',
-      //   blogPost: 'Developer HMK1022',
-      //   welcomeScreen: true,
-      //   photo: 'coding',
-      // },
+      welcomeScreen: {
+        title: 'Welcome',
+        blogPost: 'Developer HMK1022',
+        welcomeScreen: true,
+        photo: 'coding',
+      },
       // welcomeScreen 먹히질 않는다..후.,..
       sampleBlogPost: [
         {

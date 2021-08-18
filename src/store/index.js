@@ -64,7 +64,7 @@ export default new Vuex.Store({
       state.blogHTML = payload;
     },
     updateBlogTitle(state, payload) {
-      state.blogHTML = payload;
+      state.blogTitle = payload;
     },
     toggleEditPost(state, payload) {
       // vuex의 state값을 변경해 줄 때 쓰는 것 같다
@@ -110,11 +110,11 @@ export default new Vuex.Store({
       const dbResults = await dataBase.get();
       commit("setProfileInfo", dbResults);
       commit("setProfileInitials");
-      console.log(dbResults);
+      console.log("dbResults", dbResults);
       console.log("action");
       const token = await user.getIdTokenResult();
       const admin = await token.claims.aud;
-
+      console.log("어드민 확인", admin);
       commit("setProfileAdmin", admin);
     },
     async updateUserSettings({ commit, state }) {

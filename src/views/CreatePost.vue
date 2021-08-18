@@ -35,8 +35,8 @@
         />
       </div>
       <div class="blog-actions">
-        <button>Publish Blog</button>
-        <router-link class="router-button" to="#">Post Preview</router-link>
+        <button @click="uploadBlog">Publish Blog</button>
+        <router-link class="router-button" :to="{name:'BlogPreview'}">Post Preview</router-link>
       </div>
     </div>
   </div>
@@ -46,6 +46,7 @@ import firebase from "firebase/app"
 import "firebase/storage";
 import Quill from "quill";
 import BlogCoverPreview from "../conponents/BlogCoverPreview.vue"
+import db from "../firebase/firebaseInit"
 window.Quill = Quill;
 const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
@@ -78,16 +79,56 @@ export default {
     },
     imageHandler(file, Editor, cursorLocation, resetUploader) {
       const storageRef = firebase.storage().ref();
-      const docRef = storageRef.child(`document/blogPostPhotos/${file.name}`); 
+      const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`); 
       docRef.put(file).on("state_changed",(snapshot)=> {
         console.log('snapshot',snapshot);
       }, (err)=> {
         console.log('err',err)
       }, async() => {
         const downloadURL = await docRef.getDownloadURL();
-        Editor.insetEmbed(cursorLocation, "image", downloadURL);
+        Editor.insertEmbed(cursorLocation, "image", downloadURL);
         resetUploader();
       });
+    },
+
+    uploadBlog () {
+      if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0 ){
+        if (this.file){
+          const storageRef = firebase.storage().ref();
+          const docRef = storageRef.child(`document/BlogCoverPhoto/${this.$store.state.blogPhotoName}`)
+          docRef.put(this.file).on("state_changed", (snapshot)=> {
+              console.log('스냅샷',snapshot);
+          }, (err) => {
+            console.log(err);
+          }), async () => {
+            const downloadURL = await docRef.getDownloadURL();
+            const timestamp = await Date.now();
+            const dataBase = await db.collection("blogPosts").doc();
+
+            await dataBase.set({
+              blogID : dataBase.id,
+              blogHTML : this.blogHTML,
+              blogCoverPhoto: downloadURL,
+              blogCoverPhotoName : this.blogCoverPhotoName,
+              blogTitle : this.blogTitle,
+              profileId : this.profileId,
+              date: timestamp
+            })
+            this.$router.push({name: 'ViewBlog'});
+          }
+          return;  
+        }
+          this.error = true;
+          this.errorMsg = "포스팅 에러입니다 :) 파일을 업로드해주세요";
+          setTimeout(()=> {
+            this.error = false;
+          }, 5000)
+      } 
+      this.error = true;
+      this.errorMsg = "포스팅 에러입니다 :) 빈칸을 확인해 주세요";
+      setTimeout(()=> {
+        this.error = false;
+      }, 5000)
     }
   },
   computed: {
