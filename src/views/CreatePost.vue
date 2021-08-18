@@ -1,6 +1,7 @@
 <template>
   <div class="create-post">
     <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview" />
+    <Loading v-show="loading" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error:</span>{{ this.errorMsg }}</p>
@@ -47,18 +48,20 @@ import "firebase/storage";
 import Quill from "quill";
 import BlogCoverPreview from "../conponents/BlogCoverPreview.vue"
 import db from "../firebase/firebaseInit"
+import Loading from '../conponents/Loading.vue';
 window.Quill = Quill;
 const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
 
 export default {
   name: "CreatePost",
-  components: {BlogCoverPreview},
+  components: {BlogCoverPreview, Loading},
   data() {
     return {
       file: null,
       error: null,
       errorMsg: null,
+      loading: null,
       editorSettings: {
         modules: {
           imageResize: {},
@@ -94,17 +97,18 @@ export default {
     uploadBlog () {
       if (this.blogTitle.length !== 0 && this.blogHTML.length !== 0 ){
         if (this.file){
+          this.loading = true;
           const storageRef = firebase.storage().ref();
-          const docRef = storageRef.child(`document/BlogCoverPhoto/${this.$store.state.blogPhotoName}`)
+          const docRef = storageRef.child(`documents/BlogCoverPhoto/${this.$store.state.blogPhotoName}`)
           docRef.put(this.file).on("state_changed", (snapshot)=> {
-              console.log('스냅샷',snapshot);
+              console.log('스냅샷1212',snapshot);
           }, (err) => {
             console.log(err);
-          }), async () => {
+             this.loading = false;
+          }, async () => {
             const downloadURL = await docRef.getDownloadURL();
             const timestamp = await Date.now();
             const dataBase = await db.collection("blogPosts").doc();
-
             await dataBase.set({
               blogID : dataBase.id,
               blogHTML : this.blogHTML,
@@ -113,9 +117,10 @@ export default {
               blogTitle : this.blogTitle,
               profileId : this.profileId,
               date: timestamp
-            })
-            this.$router.push({name: 'ViewBlog'});
-          }
+            });
+            this.loading = false;
+            this.$router.push({name: "ViewBlog"});
+          })
           return;  
         }
           this.error = true;
