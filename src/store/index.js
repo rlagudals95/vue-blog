@@ -32,6 +32,8 @@ export default new Vuex.Store({
     ],
 
     // blog
+    blogPosts: [],
+    blogLoaded: null,
     blogHTML: "Write your blog title here...",
     blogTitle: "",
     blogPhotoName: "",
@@ -48,6 +50,14 @@ export default new Vuex.Store({
     profileId: null,
     profileInitials: null,
     profileAdmin: null,
+  },
+  getters: {
+    blogPostsFeed() {
+      return this.state.blogPosts.slice(0, 2);
+    },
+    blogPostsCards() {
+      return this.state.blogPosts.slice(2, 6);
+    },
   },
   mutations: {
     openPhotoPreview(state) {
@@ -126,6 +136,26 @@ export default new Vuex.Store({
         username: state.profileUserName,
       });
       commit("setProfileInitials");
+    },
+    async getPost({ state }) {
+      const dataBase = await db.collection("blogPosts").orderBy("date", "desc");
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+          //조건이 만족할 때 까지 도는 loop // 중복제거 목적인가
+          const data = {
+            blogID: doc.data().blogID,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date,
+          };
+          console.log("들어가는 데이터", data);
+          this.state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+      console.log("블로그 게시글들", this.state.blogPosts[0].blogCoverPhoto);
     },
   },
   modules: {},

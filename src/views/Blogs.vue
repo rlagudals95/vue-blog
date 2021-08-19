@@ -5,20 +5,21 @@
                 <span>Toggle Editing Post</span>
                 <input type="checkbox" v-model="editPost">
             </div>
-            <BlogCard :post="post" v-for="(post, index) in sampleBlogCards " :key= "index"/>
+            <BlogCard :post="post" v-for="(post, index) in blogPosts " :key= "index"/>
         </div>
     </div>
 </template>
 
 <script>
 import BlogCard from "../conponents/BlogCard"
+import {mapState} from "vuex"
 export default {
     name: "blogs",
     components: { BlogCard },
     computed:{
-        sampleBlogCards() {
-            return this.$store.state.sampleBlogCards
-        },
+        ...mapState({
+            blogPosts: state => state.blogPosts
+        }),
         editPost: {
             get () {
                 return this.$store.state.editPost

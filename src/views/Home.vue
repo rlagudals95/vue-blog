@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <BlogPost :post="welcomeScreen" />
+    <!-- <BlogPost :post="welcomeScreen" /> -->
     <BlogPost
       :post="post"
-      v-for="(post, index) in sampleBlogPost"
+      v-for="(post, index) in blogPostsFeed"
       :key="index"
     />
     <div class="blog-card-wrap">
@@ -12,7 +12,7 @@
         <div class="blog-cards">
           <BlogCard
             :post="post"
-            v-for="(post, index) in sampleBlogCards"
+            v-for="(post, index) in blogPostsCards"
             :key="index"
           />
         </div>
@@ -33,6 +33,7 @@
 import BlogPost from "../conponents/BlogPost";
 import BlogCard from "../conponents/BlogCard";
 import Arrow from "../assets/Icons/arrow-right-light.svg";
+// import { mapState } from 'vuex'
 
 export default {
   name: "Home",
@@ -67,12 +68,26 @@ export default {
     };
   },
   computed: {
+    // ...mapState ({
+    //   blogPostsCards: state => state.blogPostsCards,
+    //   blogPostsFeed: state => state.blogPostsFeed
+    // }),
     sampleBlogCards() {
       return this.$store.state.sampleBlogCards; //vuex 에서 가져온 데이터
+    },
+    blogPostsCards() {
+      return this.$store.state.blogPosts.slice(2,6); //vuex 에서 가져온 데이터
+    },
+    blogPostsFeed() {
+      return this.$store.state.blogPosts.slice(0,2); //vuex 에서 가져온 데이터
     },
     user() {
       return this.$store.state.user;
     },
+  },
+  created() {
+      console.log('blogPostsCards',this.blogPostsCards);
+      console.log('blogPostsFeed',this.blogPostsFeed);
   },
 };
 </script>

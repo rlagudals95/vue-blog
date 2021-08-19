@@ -29,6 +29,7 @@ export default {
       this.$store.commit("updateUser", user);
       if (user) {
         this.$store.dispatch("getCurrentUser", user); // user가 있다면 즉, 로그인 상태라면 getCurrenUser로 현재 접속유저 정보 vuex store에 상태값 저장
+        this.$store.dispatch("getPost");
         console.log("profile", this.$store.state.profileEmail);
       }
     });
